@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65c6e99082702641aaef85d8936e81f, type: 3}
+  m_Name: WayPointData 1
+  m_EditorClassIdentifier: 
+  m_points:
+  - name: Point
+    uniqueTangent: 1
+    position: {x: 5.13593, y: -2.7634091, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 2.9409716, y: 0.9802208, z: 0}
+    id: 0
+  - name: Point
+    uniqueTangent: 1
+    position: {x: 7.5318418, y: 1.0588207, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.6268482, y: 1.4043136, z: 0}
+    id: 1
+  - name: Point
+    uniqueTangent: 1
+    position: {x: -5.34285, y: 2.0452662, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -5.6412935, y: -3.8687649, z: 0}
+    id: 2
+  m_lastid: 3
