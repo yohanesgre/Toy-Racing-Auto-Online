@@ -5,6 +5,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using BlitheFramework;
 using WayPoint;
+using GooglePlayGames.BasicApi.Multiplayer;
+using DG.Tweening;
+using GooglePlayGames;
+using MessagePack;
+using MessagePack.Resolvers;
+using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms;
 
 public class GameManager : BaseClass
 {
@@ -14,18 +21,31 @@ public class GameManager : BaseClass
     #endregion EVENT
 
     #region Public_field
+    public static GameManager Instance;
+    public FactoryPlayer FactoryPlayer { get => factoryPlayer; set => factoryPlayer = value; }
+    public int TotalLaps { get => totalLaps; set => totalLaps = value; }
+    public bool isGameStart;
+    public bool isGameOver;
+    
     #endregion Public_field
 
     #region Pivate_field
+    [SerializeField]
+    private GameObject[] spawnner;
+    private int totalLaps;
     #endregion Pivate_field
     #endregion Initialize
 
     public override void Init()
     {
+        Instance = this;
         CreateFactoryPlayer();
-        factoryPlayer.Add(prefabPlayer, new Vector3(0, 0, 0), Quaternion.identity, 1);
-        factoryPlayer.Add(prefabPlayer, new Vector3(1, 1, 0), Quaternion.identity, 2);
-        InitLineManagerOnPlayer();
+        CreateFactoryContestant();
+        InitPlayer();
+        GameObject.Find("Main Camera").GetComponent<CameraFollow>().target = factoryPlayer.Get(0).transform;
+        //GameObject.Find("Mini Map Camera").GetComponent<CameraFollow>().target = factoryPlayer.Get(0).transform;
+        InitContestant();
+        InitStartGame();
     }
 
     void Start()
@@ -33,6 +53,19 @@ public class GameManager : BaseClass
         Init();
     }
     #region factory
+    [SerializeField] private GameObject prefabContestant;
+    FactoryContestant factoryContestant;
+    private void CreateFactoryContestant()
+    {
+        var go = new GameObject();
+        go.name = "FactoryContestant";
+        factoryContestant = new FactoryContestant();
+        factoryContestant = go.AddComponent<FactoryContestant>() as FactoryContestant;
+        #region EVENT_LISTENER_ADD_FactoryContestant
+        factoryContestant.EVENT_REMOVE += OnRemoveFactoryContestant;
+        #endregion EVENT_LISTENER_ADD_FactoryContestant    
+}
+
     [SerializeField] private GameObject prefabPlayer;
     FactoryPlayer factoryPlayer;
     private void CreateFactoryPlayer()
@@ -49,6 +82,15 @@ public class GameManager : BaseClass
     #region EVENT_LISTENER_ADD
     #endregion EVENT_LISTENER_ADD
     #region EVENT_LISTENER_METHOD
+    private void OnRemoveFactoryContestant(object _sender, EventArgs e)
+    {
+        GameObject sender = (GameObject)_sender;
+        #region EVENT_LISTENER_REMOVE_FactoryContestant
+        sender.GetComponent<FactoryContestant>().EVENT_REMOVE -= OnRemoveFactoryContestant;
+        #endregion EVENT_LISTENER_REMOVE_FactoryContestant
+        Destroy(sender);
+    }
+
     
     private void OnRemoveFactoryPlayer(object _sender, EventArgs e)
     {
@@ -62,12 +104,61 @@ public class GameManager : BaseClass
     #endregion EVENT_LISTENER_METHOD
     #endregion factory
     #region private method
-    void InitLineManagerOnPlayer()
+    void InitStartGame()
     {
-        for (int i = 0; i < factoryPlayer.GetNumberOfObjectFactories(); i++)
+        totalLaps = 3;
+        StartCoroutine(CountdownStartGame());
+    }
+
+    IEnumerator CountdownStartGame()
+    {
+        GameManagerUI.Instance.TxtCountdownStartGame.text = "Race will start in ...";
+        yield return new WaitForSeconds(1f);
+        for (int i = 3; i < 0; i--)
         {
-            factoryPlayer.Get(i).GetComponent<PlayerMovement>().manager = GameObject.FindGameObjectWithTag("LineManager").GetComponent<WaypointManager>();
-            factoryPlayer.Get(i).GetComponent<PlayerMovement>().line = i+1;
+            GameManagerUI.Instance.TxtCountdownStartGame.text = (i).ToString();
+            yield return new WaitForSeconds(1f);
+        }
+        GameManagerUI.Instance.TxtCountdownStartGame.text = "GO!!";
+        yield return new WaitForSeconds(0.3f);
+        GameManagerUI.Instance.TxtCountdownStartGame.gameObject.SetActive(false);
+        GameManagerUI.Instance.PanelCountdownStartGame.SetActive(false);
+        isGameStart = true;
+        yield return null;
+    }
+
+    IEnumerator BackToMainMenu()
+    {
+        yield return new WaitForSeconds(2f);
+        GameManagerUI.Instance.TxtCountdownStartGame.text = "Leaving race...";
+        yield return new WaitForSeconds(0.5f);
+        GameManagerUI.Instance.TxtCountdownStartGame.text = "Return to Main Menu...";
+        PlayGamesPlatform.Instance.RealTime.LeaveRoom();
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene(0);
+        yield return null;
+    }
+
+    void InitPlayer()
+    {
+        switch (ConnectionManager.Instance.playerIndex)
+        {
+            case 0:
+                factoryPlayer.Add(prefabPlayer, spawnner[0].transform.position, Quaternion.Euler(0, 0, -90), ConnectionManager.Instance.player.ParticipantId);
+                break;
+            case 1:
+                factoryPlayer.Add(prefabPlayer, spawnner[1].transform.position, Quaternion.Euler(0, 0, -90), ConnectionManager.Instance.player.ParticipantId);
+                break;
+        }
+        //factoryPlayer.Add(prefabPlayer, spawnner[0].transform.position, Quaternion.Euler(0, 0, -90), "1");
+    }
+
+    private void InitContestant()
+    {
+        for (int i = 0; i < ConnectionManager.Instance.participants.Count; i++)
+        {
+            if (ConnectionManager.Instance.participants[i].ParticipantId != ConnectionManager.Instance.player.ParticipantId)
+                factoryContestant.Add(prefabContestant, spawnner[i].transform.position, Quaternion.Euler(0, 0, -90), ConnectionManager.Instance.participants[i].ParticipantId);
         }
     }
     #endregion
@@ -82,17 +173,53 @@ public class GameManager : BaseClass
     {
         UpdateMethod();
     }
-
-    private void FixedUpdate()
-    {
-    }
+    
     public void UpdateMethod()
     {
-        for (int i = 0; i < factoryPlayer.GetNumberOfObjectFactories(); i++)
+        if (!isGameStart)
+            return;
+        if (!isGameOver)
         {
-            factoryPlayer.ChangeLineObjectFactories(i);
+            UpdateCarMovement();
+            UpdateLaps();
         }
-        //GameObject.Find("Main Camera").GetComponent<Camera>().transform.position = new Vector3 (factoryPlayer.Get(0).gameObject.transform.position.x, factoryPlayer.Get(0).gameObject.transform.position.y, -10);
+    }
+
+    private void UpdateLaps()
+    {
+        if ((int)ConnectionManager.Instance.dataReceived[8] >= totalLaps + 1)
+        {
+            GameManagerUI.Instance.PanelCountdownStartGame.SetActive(true);
+            GameManagerUI.Instance.TxtGameOver.gameObject.SetActive(true);
+            GameManagerUI.Instance.TxtGameOver.text = ConnectionManager.Instance.participants[1].DisplayName +
+                " win!\n" +
+                "Total Lap Time: " +
+                LapManagerUI.Instance.SecondsToTime(LapManager.Instance.TotalLapTime);
+            isGameOver = true;
+            StartCoroutine(BackToMainMenu());
+        }
+        if (LapManager.Instance.CurrentLap >= (totalLaps + 1))
+        {
+            Debug.Log("Lap Finish");
+            GameManagerUI.Instance.PanelCountdownStartGame.SetActive(true);
+            GameManagerUI.Instance.TxtGameOver.gameObject.SetActive(true);
+            GameManagerUI.Instance.TxtGameOver.text = "You win!\n" +
+                "Total Lap Time: " +
+                LapManagerUI.Instance.SecondsToTime(LapManager.Instance.TotalLapTime);
+            isGameOver = true;
+            Social.ReportScore((long)LapManager.Instance.TotalLapTime, "CgkI_tK68fYQEAIQAg", (bool success) => {
+            });
+            StartCoroutine(BackToMainMenu());
+        }
+    }
+
+    private void UpdateCarMovement()
+    {
+        factoryPlayer.Get(0).OnNeutral();
+        if (factoryPlayer.Get(0).IsThrottle && !factoryPlayer.Get(0).IsReverse)
+            factoryPlayer.Get(0).OnThrottle();
+        if (!factoryPlayer.Get(0).IsThrottle && factoryPlayer.Get(0).IsReverse)
+            factoryPlayer.Get(0).OnReverse();
     }
     #endregion
 }

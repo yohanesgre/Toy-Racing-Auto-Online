@@ -1,4 +1,7 @@
 using BlitheFramework;
+using GooglePlayGames;
+using MessagePack;
+using MessagePack.Resolvers;
 using System;
 using UnityEngine;
 using WayPoint;
@@ -7,25 +10,35 @@ public class Player : BaseClass
 {
     #region Initialize
     #region EVENT
-    public event EventHandler EVENT_CHANGELINE; //dispatchEvent(EVENT_ATTACH, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_NEUTRAL; //dispatchEvent(EVENT_NEUTRAL, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_REVERSE; //dispatchEvent(EVENT_REVERSE, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_THROTTLE; //dispatchEvent(EVENT_GAS, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_ONBRAKEUP; //dispatchEvent(EVENT_ONBRAKEUP, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_ONBRAKE; //dispatchEvent(EVENT_ONBRAKE, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_TURNLEFT; //dispatchEvent(EVENT_TURNLEFT, this.gameObject, EventArgs.Empty);
+    public event EventHandler EVENT_TURNRIGHT; //dispatchEvent(EVENT_TURNRIGHT, this.gameObject, EventArgs.Empty);
     public event EventHandler EVENT_REMOVE;
     #endregion EVENT
 
     #region Public_field
-    public int IdPlayer
+    public string IdPlayer
     {
         get { return idPlayer; } set { idPlayer = value; }
     }
+
+    public bool IsThrottle { get => isThrottle; set => isThrottle = value; }
+    public bool IsReverse { get => isReverse; set => isReverse = value; }
     #endregion Public_field
 
     #region Pivate_field
-    int idPlayer;
+    string idPlayer;
+    bool isThrottle;
+    bool isReverse;
     #endregion Pivate_field
     #endregion Initialize
 
     public override void Init()
     {
-        
     }
 
     void Start()
@@ -42,9 +55,34 @@ public class Player : BaseClass
     #region private method
     #endregion
     #region public method
-    public void ChangeLine()
+    public void OnBrake()
     {
-        dispatchEvent(EVENT_CHANGELINE, this.gameObject, EventArgs.Empty);
+        dispatchEvent(EVENT_ONBRAKE, this.gameObject, EventArgs.Empty);
+    }
+    
+    public void TurnLeft()
+    {
+        dispatchEvent(EVENT_TURNLEFT, this.gameObject, EventArgs.Empty);
+    }
+
+    public void TurnRight()
+    {
+        dispatchEvent(EVENT_TURNRIGHT, this.gameObject, EventArgs.Empty);
+    }
+
+    public void OnThrottle()
+    {
+        dispatchEvent(EVENT_THROTTLE, this.gameObject, EventArgs.Empty);
+    }
+
+    public void OnReverse()
+    {
+        dispatchEvent(EVENT_REVERSE, this.gameObject, EventArgs.Empty);
+    }
+
+    public void OnNeutral()
+    {
+        dispatchEvent(EVENT_NEUTRAL, this.gameObject, EventArgs.Empty);
     }
 
     public void Remove()
@@ -60,7 +98,19 @@ public class Player : BaseClass
 
     public void UpdateMethod()
     {
-        gameObject.GetComponent<PlayerMovement>().UpdatePosition();
+        var _obj = new object[] { "Player Movement",
+            ConnectionManager.Instance.player.ParticipantId,
+            transform.GetChild(0).position.x,
+            transform.GetChild(0).position.y,
+            transform.GetChild(0).position.z,
+            transform.GetChild(0).eulerAngles.x,
+            transform.GetChild(0).eulerAngles.y,
+            transform.GetChild(0).eulerAngles.z,
+            LapManager.Instance.CurrentLap,
+            LapManager.Instance.BestLapTime
+        };
+        var _byte = MessagePackSerializer.Serialize(_obj, ContractlessStandardResolver.Instance);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, _byte);
     }
     #endregion
 }

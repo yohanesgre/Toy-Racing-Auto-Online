@@ -1,0 +1,156 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65c6e99082702641aaef85d8936e81f, type: 3}
+  m_Name: WayPointData1
+  m_EditorClassIdentifier: 
+  m_points:
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 0, y: -0.14, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 0, y: 0, z: 0}
+    id: 7
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 6.8238487, y: 0.43427336, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 2.3523703, y: 0.12380886, z: 0}
+    id: 17
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 7.315772, y: -1.4745704, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.5847559, y: -0.2228564, z: 0}
+    id: 18
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -7.505173, y: -4.0456448, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.9066596, y: -0.2971425, z: 0}
+    id: 19
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -8.007861, y: -6.187677, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 2.223239, y: -1.6748886, z: 0}
+    id: 20
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -2.7330337, y: -5.9706364, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 2.0320764, y: -1.3918915, z: 0}
+    id: 21
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 0.23166871, y: -8.419182, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 1.9531019, y: -2.7103958, z: 0}
+    id: 22
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 3.0839162, y: -5.972171, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -0.5893452, y: 1.605269, z: 0}
+    id: 23
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 1.686893, y: -3.2217743, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 1.7504134, y: 0.5702224, z: 0}
+    id: 24
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 11.025114, y: -2.2689517, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -0.020684242, y: 0.44084358, z: 0}
+    id: 25
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 11.154875, y: 0.13900703, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -0.8745909, y: 1.0877445, z: 0}
+    id: 26
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 5.983479, y: 4.6323214, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.3921142, y: -0.5683255, z: 0}
+    id: 27
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: 2.2916152, y: 3.0106034, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.8578808, y: 0.25970793, z: 0}
+    id: 28
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -0.15004611, y: 7.414255, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -0.09829402, y: 2.1227865, z: 0}
+    id: 29
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -2.9039054, y: 8.733611, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -2.2509403, y: -1.1681366, z: 0}
+    id: 30
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -9.106007, y: 6.179061, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -0.8447037, y: -0.7208667, z: 0}
+    id: 31
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -10.031398, y: 1.5781684, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 1.0836029, y: -1.5937397, z: 0}
+    id: 32
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -10.455259, y: -0.012722254, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: -1.465352, y: 0.64935994, z: 0}
+    id: 33
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -10.230576, y: -1.2049401, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 1.9251528, y: 0.119299054, z: 0}
+    id: 34
+  - name: Start Line 1
+    uniqueTangent: 1
+    position: {x: -6.461236, y: -0.82031274, z: 0}
+    tangentL: {x: 0, y: 0, z: 0}
+    tangentR: {x: 0, y: 0, z: 0}
+    tangent: {x: 0, y: 0, z: 0}
+    id: 35
+  m_lastid: 36
