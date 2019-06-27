@@ -18,17 +18,18 @@ public class MainMenuManager : MonoBehaviour
     {
         Instance = this;
         ConnectionManager.Instance.Init();
-        btnQuickMatch.gameObject.active = false;
+        btnQuickMatch.gameObject.SetActive(false);
         Social.localUser.Authenticate((bool success) => {
             if (success)
-                btnQuickMatch.gameObject.active = true;
+                btnQuickMatch.gameObject.SetActive(true);
         });
     }
     
     public void BtnQuickMatchPressed()
     {
+        txtStatus.text = "Finding match...";
+        btnQuickMatch.gameObject.SetActive(false);
         ConnectionManager.Instance.CreateQuickGame();
-        //CreateQuickGame();
     }
 
     public void BtnLeaderboardPressed()

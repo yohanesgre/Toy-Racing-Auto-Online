@@ -74,6 +74,8 @@ public class ConnectionManager : Singleton<ConnectionManager>, RealTimeMultiplay
         else
         {
             MainMenuManager.Instance.txtStatus.text = "Room connected failed";
+            PlayGamesPlatform.Instance.RealTime.LeaveRoom();
+            MainMenuManager.Instance.btnQuickMatch.gameObject.SetActive(true);
         }
         
     }

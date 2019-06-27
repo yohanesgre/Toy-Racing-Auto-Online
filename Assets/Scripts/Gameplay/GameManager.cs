@@ -191,7 +191,15 @@ public class GameManager : BaseClass
         {
             GameManagerUI.Instance.PanelCountdownStartGame.SetActive(true);
             GameManagerUI.Instance.TxtGameOver.gameObject.SetActive(true);
-            GameManagerUI.Instance.TxtGameOver.text = ConnectionManager.Instance.participants[1].DisplayName +
+            string _winnerName = "";
+            for(int i = 0; i < ConnectionManager.Instance.participants.Count; i++)
+            {
+                if(ConnectionManager.Instance.participants[i].ParticipantId != ConnectionManager.Instance.player.DisplayName)
+                {
+                    _winnerName = ConnectionManager.Instance.participants[i].DisplayName;
+                }
+            }
+            GameManagerUI.Instance.TxtGameOver.text = _winnerName +
                 " win!\n" +
                 "Total Lap Time: " +
                 LapManagerUI.Instance.SecondsToTime(LapManager.Instance.TotalLapTime);
@@ -207,7 +215,7 @@ public class GameManager : BaseClass
                 "Total Lap Time: " +
                 LapManagerUI.Instance.SecondsToTime(LapManager.Instance.TotalLapTime);
             isGameOver = true;
-            Social.ReportScore((long)LapManager.Instance.TotalLapTime, "CgkI_tK68fYQEAIQAg", (bool success) => {
+            Social.ReportScore((int)LapManager.Instance.TotalLapTime, "CgkI_tK68fYQEAIQAg", (bool success) => {
             });
             StartCoroutine(BackToMainMenu());
         }
