@@ -64,6 +64,7 @@ public class Contestant : BaseClass
 
     private void UpdatePartcipantMovement()
     {
+        // mengupdate object musuh/contestant pada client pemain sesuai index yg diterima dr connectionmanager
         GameManagerUI.Instance.TxtDebugger2.text = "UpdateParticipantMovement";
         if ((string)ConnectionManager.Instance.dataReceived[0] == "Player Movement")
         {

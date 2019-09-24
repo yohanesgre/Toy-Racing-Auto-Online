@@ -113,7 +113,10 @@ public class ConnectionManager : Singleton<ConnectionManager>, RealTimeMultiplay
 
     public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
     {
+        //menerima packet messagepack dr user lain
         dataReceived = MessagePackSerializer.Deserialize<object[]>(data, ContractlessStandardResolver.Instance);
+
+        //Debugging pake UI
         /*if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SampleScene") && dataReceived != null)
         {
             GameManager.Instance.txtDebugger.text =

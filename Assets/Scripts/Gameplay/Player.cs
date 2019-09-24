@@ -98,6 +98,18 @@ public class Player : BaseClass
 
     public void UpdateMethod()
     {
+
+        /**Update gerakan player
+         * 
+         * struktur bisa diganti2
+         * yg ini index 0 participant id dr googleplay
+         * 1 - 3 posisi xyz
+         * 4 - 6 rotasi xyz
+         * 7 lapnya skrng
+         * 8 bestlaptime
+         * 
+         * trus array object diserialize jd byte utk dikirim ke semua
+        */
         var _obj = new object[] { "Player Movement",
             ConnectionManager.Instance.player.ParticipantId,
             transform.GetChild(0).position.x,
